@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  finance-bot:
+    build: .
+    container_name: uae-finance-bot
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      # Persist user data
+      - ./user_profiles:/app/user_profiles
+      # Optional: Mount logs directory
+      - ./logs:/app/logs
+    # Resource limits (optional)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+# To use:
+# 1. Create .env file with your tokens
+# 2. Run: docker-compose up -d
+# 3. Check logs: docker-compose logs -f
+# 4. Stop: docker-compose down
